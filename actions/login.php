@@ -6,7 +6,7 @@ session_start();
 $username = $_POST['username'];
 $password = $_POST['password'];
 
-$sql = "SELECT username,role FROM users WHERE username = '$username' AND password = '$password' LIMIT 1";
+$sql = "SELECT id,username,role FROM users WHERE username = '$username' AND password = '$password' LIMIT 1";
 $result = $con->query($sql);
 
 if ($result->num_rows > 0) {

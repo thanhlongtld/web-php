@@ -16,7 +16,7 @@ if (isset($_SESSION['user']) && count($_SESSION['user']) > 0) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Đăng nhập</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="./style.css" rel="stylesheet" />
+    <link href="./css/style.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 

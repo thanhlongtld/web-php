@@ -33,6 +33,7 @@ $con->close();
     <title>Thêm mới đơn hàng</title>
     <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="./css/style.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -90,30 +91,29 @@ $con->close();
                 </div>
             </div>
         </div>
-        <form action="index.html" method="get">
+        <form id="add-trans-form" method="POST">
             <div class="row mt-5">
                 <h1 class="text-white text-center w-100 mt-2">Thêm mới đơn hàng</h1>
                 <div class="col-12 col-lg-6 mt-3">
                     <div class="d-flex align-items-center justify-content-between pr-lg-5 mb-3">
                         <label class="text-muted" for="customer">Tên khách hàng</label>
-                        <input class="form-control w-50" id="customer" name="customer" placeholder="Nhập tên khách hàng" type="text" />
+                        <input class="form-control w-50" id="customer_name" name="customer_name" placeholder="Nhập tên khách hàng" type="text" />
                     </div>
                     <div class="d-flex align-items-center justify-content-between pr-lg-5 mb-3">
                         <label class="text-muted" for="address">Địa chỉ</label>
-                        <input class="form-control w-50" id="address" name="address" placeholder="Nhập địa chỉ khách hàng" type="text" />
+                        <input class="form-control w-50" id="customer_address" name="customer_address" placeholder="Nhập địa chỉ khách hàng" type="text" />
                     </div>
                     <div class="d-flex align-items-center justify-content-between pr-lg-5 mb-3">
                         <label class="text-muted" for="tel">Số điện thoại</label>
-                        <input class="form-control w-50" id="tel" name="tel" placeholder="Nhập số điện thoại khách hàng" type="tel" />
+                        <input class="form-control w-50" id="tel" name="customer_phone" placeholder="Nhập số điện thoại khách hàng" type="tel" />
                     </div>
                     <div class="d-flex align-items-center justify-content-between pr-lg-5 mb-3">
                         <label class="text-muted" for="email">Email</label>
-                        <input class="form-control w-50" id="email" name="email" placeholder="Nhập số email khách hàng" type="email" />
+                        <input class="form-control w-50" id="email" name="customer_email" placeholder="Nhập số email khách hàng" type="email" />
                     </div>
                     <div class="d-flex align-items-center justify-content-between pr-lg-5 mb-3">
                         <label class="text-muted" for="note">Lưu ý của khách</label>
-                        <textarea class="form-control w-50" id="note" name="note" placeholder="Nhập lưu ý" rows="4">
-                    </textarea>
+                        <textarea class="form-control w-50" id="note" name="customer_note" placeholder="Nhập lưu ý" rows="4"></textarea>
                     </div>
 
                     <div class="d-flex align-items-center justify-content-between pr-lg-5 mb-3">
@@ -123,10 +123,6 @@ $con->close();
                             <option value="master">Mastercard</option>
                             <option value="cod">Thanh toán khi nhận hàng</option>
                         </select>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between pr-lg-5 mb-3">
-                        <label class="text-muted" for="quantity">Số lượng</label>
-                        <input class="form-control w-50" id="quantity" name="quantity" pattern="[1-9][0-9]*" placeholder="Nhập số lượng" type="number" />
                     </div>
                     <div class="d-flex align-items-center justify-content-between pr-lg-5 mb-3">
                         <label class="text-muted w-50">Phân loại</label>
@@ -143,7 +139,6 @@ $con->close();
                             </label>
                         </div>
                     </div>
-
                 </div>
                 <div class="col-12 col-lg-6 mt-3">
                     <h3 class="text-white">Danh sách sản phẩm</h3>
@@ -159,18 +154,17 @@ $con->close();
                                 <tbody id="detail_body" data-number="1">
                                     <tr>
                                         <td>
-                                            <select class="form-control" id="product" name="products[0][product_id]">
+                                            <select data-number="0" class="form-control product-select" id="product" name="products[0][product_id]">
                                                 <option value="">Chọn sản phẩm</option>
                                                 <?php
                                                 foreach ($products as $product) {
                                                     echo '<option value="' . $product['id'] . '">' . $product['name'] . '</option>';
                                                 }
                                                 ?>
-
                                             </select>
                                         </td>
                                         <td>
-                                            <input name="products[0][quantity]" class="form-control" placeholder="Điền số lượng" />
+                                            <input type="number" value="1" data-number="0" name="products[0][quantity]" class="form-control product-quantity" placeholder="Điền số lượng" />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -182,7 +176,7 @@ $con->close();
                 </div>
                 <div class="d-flex align-items-center justify-content-between pr-lg-5 mb-3 mx-auto">
                     <label class="text-muted" for="total">Tổng tiền: </label>
-                    <h4 id="text-total" class="text-white ml-2">asdsadsad</h4>
+                    <h4 id="text-total" class="text-white ml-2">0</h4>
                 </div>
                 <div class="text-center w-100">
                     <a class="btn btn-secondary m-auto text-center mt-3" href="index.html">Hủy</a>
@@ -196,6 +190,7 @@ $con->close();
     <script>
         let products = <?php echo json_encode($products); ?>;
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="./js/add_transaction.js"></script>
 </body>
 
