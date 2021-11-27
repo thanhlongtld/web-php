@@ -21,8 +21,8 @@ if (isset($_SESSION['user']) && count($_SESSION['user']) > 0) {
 </head>
 
 <body>
-    <div class="wrapper rounded">
-        <div id="register" class="w-50 m-auto">
+    <div class="wrapper rounded" style="width: 25%;">
+        <div id="register" class="m-auto">
             <h2 class="text-center">Đăng nhập</h2>
             <form id="login-form" method="post" action="./actions/login.php">
                 <div class="form-group">
@@ -43,7 +43,7 @@ if (isset($_SESSION['user']) && count($_SESSION['user']) > 0) {
                 }
 
                 ?>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-success">Đăng nhập</button>
             </form>
         </div>
     </div>

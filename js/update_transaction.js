@@ -1,11 +1,38 @@
-const confirmTranButtons = $('.confirm-transaction-button');
+const updateButton = $('#update-tran-button');
+const confirmTranButton = $('#confirm-tran-button');
+const form = $('#update-trans-form');
 
-confirmTranButtons.on('click', function (e) {
-    const button = $(e.target);
-    const id = button.data('id');
+updateButton.on('click', (e) => {
+    form.submit();
+});
+
+form.on('submit', (e) => {
+    e.preventDefault();
+    $.ajax({
+        url: `http://ptit-web-php.local/actions/update-transaction.php?id=${id}`,
+        data: $(e.target).serialize(),
+        type: 'POST',
+        processData: false,
+        success: (data) => {
+            const result = JSON.parse(data);
+            if (parseInt(result.code) === 200) {
+                toastr.success('Chỉnh sửa đơn hàng thành công', 'Hệ thống');
+                setTimeout(function () {
+                    window.location.href =
+                        'http://ptit-web-php.local/index.php';
+                }, 500);
+            } else if (parseInt(result.code) === 400) {
+                toastr.error('Dữ liệu không hợp lệ', 'Hệ thống');
+            } else {
+                toastr.error('Chỉnh sửa đơn hàng thất bại', 'Hệ thống');
+            }
+        },
+    });
+});
+
+confirmTranButton.on('click', (e) => {
     $.ajax({
         url: `http://ptit-web-php.local/actions/confirm-transaction.php?id=${id}`,
-        data: $(e.target).serialize(),
         type: 'POST',
         processData: false,
         success: (data) => {
@@ -19,32 +46,6 @@ confirmTranButtons.on('click', function (e) {
                 toastr.error('Dữ liệu không hợp lệ', 'Hệ thống');
             } else {
                 toastr.error('Xác nhận đơn hàng thất bại', 'Hệ thống');
-            }
-        },
-    });
-});
-
-const denyTranButtons = $('.deny-transaction-button');
-
-denyTranButtons.on('click', function (e) {
-    const button = $(e.target);
-    const id = button.data('id');
-    $.ajax({
-        url: `http://ptit-web-php.local/actions/deny-transaction.php?id=${id}`,
-        data: $(e.target).serialize(),
-        type: 'POST',
-        processData: false,
-        success: (data) => {
-            const result = JSON.parse(data);
-            if (parseInt(result.code) === 200) {
-                toastr.success('Hủy đơn hàng thành công', 'Hệ thống');
-                setTimeout(function () {
-                    location.reload();
-                }, 500);
-            } else if (parseInt(result.code) === 400) {
-                toastr.error('Dữ liệu không hợp lệ', 'Hệ thống');
-            } else {
-                toastr.error('Hủy đơn hàng thất bại', 'Hệ thống');
             }
         },
     });

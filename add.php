@@ -17,6 +17,14 @@ if ($productsQueryRes->num_rows > 0) {
     }
 }
 
+$queryIncome = 'SELECT SUM(total_price) as total_income FROM transactions WHERE status <> 5';
+$resIncome = $con->query($queryIncome);
+$income = $resIncome->fetch_assoc()['total_income'];
+
+$queryTotalTrans = 'SELECT COUNT(id) as total_trans FROM transactions';
+$resTotalTrans = $con->query($queryTotalTrans);
+$totalTrans = $resTotalTrans->fetch_assoc()['total_trans'];
+
 $con->close();
 
 
@@ -68,9 +76,14 @@ $con->close();
                         </div>
                     </li>
                     <li class="nav-item ">
-                        <form action="search.html" method="GET">
-                            <a href="#"><span class="fa fa-search"></span></a> <input class="dark" name="name" placeholder="Tìm kiếm" type="search">
+                        <form autocomplete="off">
+                            <a href="#"><span class="fa fa-search"></span></a> <input id="search" class="dark" name="name" placeholder="Tìm kiếm" type="search">
+                            <div id="suggestion" class="text-light position-absolute rounded" style="min-width: 200px;z-index:1000; background-color: #444;">
+                            </div>
                         </form>
+                    </li>
+                    <li class="nav-item ">
+                        <a href="./logout.php" class="btn btn-danger" style="white-space: nowrap;">Đăng xuất</a>
                     </li>
                 </ul>
             </div>
@@ -80,14 +93,14 @@ $con->close();
                 <div class="d-flex justify-content-start align-items-center">
                     <p class="fa fa-long-arrow-down"></p>
                     <p class="text mx-3">Thu nhập</p>
-                    <p class="text-white ml-4 money">150.000.000 VND</p>
+                    <p class="text-white ml-4 money"><?php echo number_format($income) . ' đ' ?></p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="d-flex justify-content-md-end align-items-center">
                     <div class="fa fa-long-arrow-up"></div>
-                    <div class="text mx-3">Chi trả</div>
-                    <div class="text-white ml-4 money">50.000.000</div>
+                    <div class="text mx-3">Số đon hàng</div>
+                    <div class="text-white ml-4 money"><?php echo $totalTrans ?></div>
                 </div>
             </div>
         </div>
@@ -179,7 +192,7 @@ $con->close();
                     <h4 id="text-total" class="text-white ml-2">0</h4>
                 </div>
                 <div class="text-center w-100">
-                    <a class="btn btn-secondary m-auto text-center mt-3" href="index.html">Hủy</a>
+                    <a class="btn btn-secondary m-auto text-center mt-3" href="./index.php">Hủy</a>
                     <button class="btn btn-success m-auto text-center mt-3">Xác nhận</button>
                 </div>
 
@@ -192,6 +205,7 @@ $con->close();
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="./js/add_transaction.js"></script>
+    <script src="./js/search.js"></script>
 </body>
 
 </html>

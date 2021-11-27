@@ -72,7 +72,6 @@ $(document).on('input', 'input.product-quantity', (e) => {
 
 $('#add-trans-form').on('submit', (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
     // http://ptit-web-php.local/actions/add-transaction.php
     $.ajax({
         url: 'http://ptit-web-php.local/actions/add-transaction.php',
@@ -83,7 +82,12 @@ $('#add-trans-form').on('submit', (e) => {
             const result = JSON.parse(data);
             if (parseInt(result.code) === 200) {
                 toastr.success('Tạo đơn hàng thành công', 'Hệ thống');
-                window.location.href = 'http://ptit-web-php.local/index.php';
+                setTimeout(() => {
+                    window.location.href =
+                        'http://ptit-web-php.local/index.php';
+                }, 500);
+            } else if (parseInt(result.code) === 400) {
+                toastr.error('Dữ liệu không hợp lệ', 'Hệ thống');
             } else {
                 toastr.error('Tạo đơn hàng thất bại', 'Hệ thống');
             }

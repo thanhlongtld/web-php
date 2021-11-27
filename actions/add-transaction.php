@@ -1,12 +1,13 @@
 
 <?php
+
 $data = $_POST;
 include_once '../includes/db.php';
 
 session_start();
 
-// Statuts: 1: thanh cong 2: cho xac nhan, 3: chờ lấy hàng, 4: đang giao, 5:thất bại
-
+// Status: 1: thanh cong 2: cho xac nhan, 3: chờ lấy hàng, 4: đang giao, 5:thất bại
+// Type: 1:online, 2: offline
 
 
 if (
